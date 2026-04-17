@@ -2,27 +2,36 @@
 
 Around The U.S. is a dynamic web application developed as part of the TripleTen Web Development Bootcamp. The project simulates a social media interface where users can manage their profile and interact with image-based content.
 
-🔗 [Live Demo](https://adrielfunini16.github.io/web_project_around_pt/)
+## 🔗 Live Demo
+
+[Visit the website](https://adrielfunini16.github.io/web_project_around_pt/)
+
+---
 
 ## Project Overview
 
 This application allows users to edit their profile information and interact with a collection of visual cards representing locations. The project focuses on DOM manipulation, event handling, and dynamic UI updates using JavaScript.
 
+---
+
 ## Features
 
 - Edit user profile (name and description)
 - Modal-based interface for profile editing
-- Display of image cards with titles
-- Structured layout for scalable content
+- Add new cards dynamically via form
+- Like/unlike cards
+- Delete cards from the interface
+- Open images in a full-size modal with caption
+- Dynamic rendering of cards using JavaScript
+
+---
 
 ## In Progress
 
-The following features are currently under development:
-
-- Add new cards dynamically
-- Like/unlike cards
-- Delete cards
 - Form validation improvements
+- Data persistence (future backend integration)
+
+---
 
 ## Technologies Used
 
@@ -30,17 +39,24 @@ The following features are currently under development:
 - CSS3
 - JavaScript (DOM manipulation and event handling)
 
+---
+
 ## Key Concepts Practiced
 
 - DOM selection and manipulation
 - Event listeners and user interaction
 - Working with templates
 - Dynamic rendering of elements
-- Modular and scalable UI structure
+- Handling forms and user input
+- Managing UI state through JavaScript
+
+---
 
 ## Notes
 
-User data is not persisted. All changes are temporary and reset upon page reload.
+Currently, user data is not persisted. All changes are stored temporarily in the DOM and reset upon page reload. Future updates will include backend integration for data persistence.
+
+---
 
 ## Author
 
