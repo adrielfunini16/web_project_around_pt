@@ -1,3 +1,13 @@
+import { Card } from "./Card.js";
+import {
+  openModal,
+  closeModal,
+  setCloseByOverlay,
+  handleEscClose,
+} from "./utils.js";
+
+import { FormValidator } from "./formValidator.js";
+
 const initialCards = [
   {
     name: "Vale de Yosemite",
@@ -46,13 +56,27 @@ const popupClose = newCardPopup.querySelector(".popup__close");
 const newCardForm = newCardPopup.querySelector("#new-card-form");
 const inputNameCard = newCardForm.querySelector(".popup__input_type_card-name");
 const inputUrlCard = newCardForm.querySelector(".popup__input_type_url");
-const popupSubmitButton = newCardForm.querySelector(".popup__button");
 
 const popups = document.querySelectorAll(".popup");
 const imagePopupModal = document.querySelector("#image-popup");
 const popupCloseImage = imagePopupModal.querySelector(".popup__close");
-const popupImage = imagePopupModal.querySelector(".popup__image");
-const popupCaption = imagePopupModal.querySelector(".popup__caption");
+
+const validationConfig = {
+  inputSelector: ".popup__input",
+  submitButtonSelector: ".popup__button",
+  inactiveButtonClass: "popup__button_disabled",
+  inputErrorClass: "popup__input_type_error",
+  errorClass: "popup__error",
+};
+
+const editFormValidator = new FormValidator(
+  validationConfig,
+  formPopEditProfile,
+);
+editFormValidator.setEventListeners();
+
+const cardFormValidator = new FormValidator(validationConfig, newCardForm);
+cardFormValidator.setEventListeners();
 
 popupCloseImage.addEventListener("click", function () {
   closeModal(imagePopupModal);
@@ -75,32 +99,9 @@ function fillProfileForm() {
   popupInputDescription.value = profileDescription.textContent;
 }
 
-function openModal(popup) {
-  popup.classList.add("popup_is-opened");
-}
-
-function closeModal(popup) {
-  popup.classList.remove("popup_is-opened");
-}
-
-function setCloseByOverlay(popup) {
-  popup.addEventListener("click", (evt) => {
-    if (evt.target === popup) {
-      closeModal(popup);
-    }
-  });
-}
-
 popups.forEach((popup) => {
   setCloseByOverlay(popup);
 });
-
-function handleEscClose(evt) {
-  if (evt.key === "Escape") {
-    const openedPopup = document.querySelector(".popup_is-opened");
-    closeModal(openedPopup);
-  }
-}
 
 document.addEventListener("keydown", handleEscClose);
 
@@ -114,60 +115,30 @@ popupCloseButton.addEventListener("click", function () {
 
 formPopEditProfile.addEventListener("submit", handleProfileFormSubmit);
 
-function getCardElement(name, link) {
-  const cardTemplate = document
-    .querySelector("#card__template")
-    .content.querySelector(".card");
-
-  const cardElement = cardTemplate.cloneNode(true);
-
-  const cardName = cardElement.querySelector(".card__title");
-  const cardImage = cardElement.querySelector(".card__image");
-  const cardLikeButton = cardElement.querySelector(".card__like-button");
-  const cardDeleteButton = cardElement.querySelector(".card__delete-button");
-
-  cardName.textContent = name;
-  cardImage.src = link;
-  cardImage.alt = name;
-
-  function handleCardLikeButton() {
-    cardLikeButton.classList.toggle("card__like-button_is-active");
-  }
-  cardLikeButton.addEventListener("click", handleCardLikeButton);
-
-  function handleCardDeleteButton() {
-    cardElement.remove();
-  }
-  cardDeleteButton.addEventListener("click", handleCardDeleteButton);
-
-  function handlePopupImage() {
-    popupCaption.textContent = name;
-    popupImage.src = link;
-    popupImage.alt = name;
-    openModal(imagePopupModal);
-  }
-  cardImage.addEventListener("click", handlePopupImage);
-
-  return cardElement;
+function renderCard(data, container) {
+  const card = new Card(data, "#card__template");
+  const cardElement = card.getCardElement();
+  container.prepend(cardElement);
 }
 
-function renderCard(name, link, container) {
-  const card = getCardElement(name, link);
-  container.prepend(card);
-}
-
-initialCards.forEach(function (item) {
-  renderCard(item.name, item.link, cardsList);
+initialCards.forEach((cardData) => {
+  renderCard(cardData, cardsList);
 });
 
 function handleCardFormSubmit(evt) {
   evt.preventDefault();
+
   const name = inputNameCard.value;
   const link = inputUrlCard.value;
-  renderCard(name, link, cardsList);
+
+  const cardData = {
+    name,
+    link,
+  };
+  renderCard(cardData, cardsList);
   closeModal(newCardPopup);
   newCardForm.reset();
-  toggleButtonState(newCardForm);
+  cardFormValidator.resetValidation();
 }
 
 profileAddButton.addEventListener("click", function () {
@@ -179,47 +150,3 @@ popupClose.addEventListener("click", function () {
 });
 
 newCardForm.addEventListener("submit", handleCardFormSubmit);
-
-const formsPopup = document.querySelectorAll(".popup__form");
-
-formsPopup.forEach((form) => {
-  const inputs = form.querySelectorAll(".popup__input");
-
-  toggleButtonState(form);
-
-  inputs.forEach((input) => {
-    input.addEventListener("input", () => {
-      if (!input.validity.valid) {
-        showError(form, input, input.validationMessage);
-      } else {
-        hideInputError(form, input);
-      }
-      toggleButtonState(form);
-    });
-  });
-  form.addEventListener("submit", (evt) => {
-    evt.preventDefault();
-  });
-});
-
-function showError(form, inputElement, errorMessage) {
-  const errorElement = form.querySelector(`#${inputElement.id}-error`);
-  inputElement.classList.add("popup__input_type_error");
-  errorElement.textContent = errorMessage;
-  errorElement.classList.add("popup__error");
-}
-
-function hideInputError(form, inputElement) {
-  const errorElement = form.querySelector(`#${inputElement.id}-error`);
-  inputElement.classList.remove("popup__input_type_error");
-  errorElement.textContent = "";
-  errorElement.classList.remove("popup__error");
-}
-
-function toggleButtonState(form) {
-  const inputs = form.querySelectorAll(".popup__input");
-  const button = form.querySelector(".popup__button");
-
-  const allValid = Array.from(inputs).every((input) => input.validity.valid);
-  button.disabled = !allValid;
-}
