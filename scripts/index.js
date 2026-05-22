@@ -35,10 +35,6 @@ const initialCards = [
   },
 ];
 
-initialCards.forEach(function (card) {
-  console.log(card.name);
-});
-
 const profileEditButton = document.querySelector(".profile__edit-button");
 const editPopup = document.querySelector("#edit-popup");
 const formPopEditProfile = editPopup.querySelector("#edit-profile-form");
