@@ -1,6 +1,4 @@
-import { openModal } from "./utils.js";
-
-export class Card {
+export default class Card {
   #name;
   #link;
   #selector;
@@ -9,11 +7,13 @@ export class Card {
   #cardImage;
   #cardLikeButton;
   #cardDeleteButton;
+  #handleCardClick;
 
-  constructor(data, selector) {
+  constructor(data, selector, handleCardClick) {
     this.#name = data.name;
     this.#link = data.link;
     this.#selector = selector;
+    this.#handleCardClick = handleCardClick;
   }
 
   #getTemplate() {
@@ -50,18 +50,6 @@ export class Card {
     this.#cardElement.remove();
   }
 
-  #handlePopupImage() {
-    const imagePopupModal = document.querySelector("#image-popup");
-    const popupImage = imagePopupModal.querySelector(".popup__image");
-    const popupCaption = imagePopupModal.querySelector(".popup__caption");
-
-    popupImage.src = this.#link;
-    popupImage.alt = this.#name;
-    popupCaption.textContent = this.#name;
-
-    openModal(imagePopupModal);
-  }
-
   #setEventListeners() {
     this.#cardLikeButton.addEventListener("click", () => {
       this.#handleLikeClick();
@@ -70,7 +58,10 @@ export class Card {
       this.#handleCardDelete();
     });
     this.#cardImage.addEventListener("click", () => {
-      this.#handlePopupImage();
+      this.#handleCardClick({
+        name: this.#name,
+        link: this.#link,
+      });
     });
   }
 }
