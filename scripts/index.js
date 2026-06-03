@@ -99,6 +99,7 @@ function handleProfileFormSubmit(data) {
 }
 
 profileEditButton.addEventListener("click", function () {
+  editFormValidator.resetValidation();
   handleOpenEditModal();
 });
 
@@ -127,5 +128,6 @@ function handleCardFormSubmit(data) {
 }
 
 profileAddButton.addEventListener("click", function () {
+  cardFormValidator.resetValidation();
   popNewCard.open();
 });
