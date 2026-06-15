@@ -1,63 +1,121 @@
 # Around The U.S.
 
-Around The U.S. is a dynamic web application developed as part of the TripleTen Web Development Bootcamp. The project simulates a social media interface where users can manage their profile and interact with image-based content.
+Around The U.S. is an interactive web application developed during the TripleTen Full-Stack Web Development Bootcamp. The project simulates a social media platform where users can manage their profile, create image cards, and interact with content through a dynamic user interface.
 
 ## 🔗 Live Demo
 
-[Visit the website](https://adrielfunini16.github.io/web_project_around_pt/)
+👉 [Live Demo](https://adrielfunini16.github.io/web_project_around_pt/)
 
 ---
 
 ## Project Overview
 
-This application allows users to edit their profile information and interact with a collection of visual cards representing locations. The project focuses on DOM manipulation, event handling, and dynamic UI updates using JavaScript.
+This project was progressively developed across multiple bootcamp sprints, evolving from basic DOM manipulation into a modular and object-oriented JavaScript application.
+
+Users can edit profile information, add new cards, remove cards, like content, and view images in fullscreen popups. The application emphasizes clean architecture, reusable components, and maintainable code organization.
 
 ---
 
 ## Features
 
-- Edit user profile (name and description)
-- Modal-based interface for profile editing
-- Add new cards dynamically via form
-- Like/unlike cards
-- Delete cards from the interface
-- Open images in a full-size modal with caption
-- Dynamic rendering of cards using JavaScript
+### User Profile
+
+* Edit profile name and description
+* Automatically update profile information on the page
+* Form validation with real-time feedback
+
+### Cards
+
+* Dynamically render cards from JavaScript data
+* Add new cards through a popup form
+* Delete cards
+* Like and unlike cards
+
+### Popups
+
+* Open and close popups dynamically
+* Close popups by:
+
+  * Close button
+  * Overlay click
+  * ESC key
+* Display images in fullscreen mode with captions
+
+### Validation
+
+* Native HTML5 validation
+* Custom error messages
+* Disabled submit button for invalid forms
+* Automatic validation state management
 
 ---
 
-## In Progress
+## Architecture
 
-- Form validation improvements
-- Data persistence (future backend integration)
+The project follows an object-oriented architecture and is organized into reusable modules.
+
+### Main Classes
+
+* `Card`
+* `Section`
+* `Popup`
+* `PopupWithForm`
+* `PopupWithImage`
+* `UserInfo`
+* `FormValidator`
+
+### OOP Concepts Applied
+
+* Classes and instances
+* Encapsulation
+* Private fields (`#`)
+* Inheritance
+* Polymorphism
+* Separation of responsibilities
+* Reusable components
 
 ---
 
 ## Technologies Used
 
-- HTML5
-- CSS3
-- JavaScript (DOM manipulation and event handling)
+* HTML5
+* CSS3
+* JavaScript (ES6+)
+* DOM API
+* ES Modules
+* Git
+* GitHub
+* GitHub Pages
 
 ---
 
 ## Key Concepts Practiced
 
-- DOM selection and manipulation
-- Event listeners and user interaction
-- Working with templates
-- Dynamic rendering of elements
-- Handling forms and user input
-- Managing UI state through JavaScript
+* DOM manipulation
+* Event handling
+* Form validation
+* Dynamic rendering
+* Object-Oriented Programming (OOP)
+* Modular JavaScript architecture
+* Encapsulation and inheritance
+* User interface state management
+* Responsive web design
 
 ---
 
-## Notes
+## Future Improvements
 
-Currently, user data is not persisted. All changes are stored temporarily in the DOM and reset upon page reload. Future updates will include backend integration for data persistence.
+* Backend integration
+* Persistent data storage
+* API integration
+* User authentication
+* Database support
 
 ---
 
 ## Author
 
-Adriel Funini
+**Adriel Funini**  
+Junior Frontend Developer
+
+
