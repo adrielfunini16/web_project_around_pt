@@ -66,6 +66,15 @@
   padding: 34px 36px;
 }
 
+.popup__content_type_confirmation {
+  min-height: 181px;
+  padding: 34px 36px 36px;
+}
+
+.popup__button_type_confirmation {
+  margin-top: 38px;
+}
+
 .popup__form {
   margin-top: 27px;
 }

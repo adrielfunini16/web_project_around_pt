@@ -4,34 +4,24 @@ import Popup from "./Popup.js";
 import FormValidator from "./FormValidator.js";
 import PopupWithForm from "./PopupWithForm.js";
 import PopupWithImage from "./PopupWithImage.js";
+import PopupWithConfirmation from "./PopupWithConfirmation.js";
 import UserInfo from "./UserInfo.js";
+import Api from "./Api.js";
 
-const initialCards = [
-  {
-    name: "Vale de Yosemite",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_yosemite.jpg",
+const api = new Api({
+  baseUrl: "https://around-api.pt-br.tripleten-services.com/v1",
+  headers: {
+    authorization: "26aaa4dc-8dbe-4d3b-89de-45939130d263",
+    "Content-Type": "application/json",
   },
-  {
-    name: "Lago Louise",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lake-louise.jpg",
-  },
-  {
-    name: "Montanhas Carecas",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_bald-mountains.jpg",
-  },
-  {
-    name: "Latemar",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_latemar.jpg",
-  },
-  {
-    name: "Parque Nacional Vanoise",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_vanoise.jpg",
-  },
-  {
-    name: "Lago di Braies",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lago.jpg",
-  },
-];
+});
+
+api.getAppInfo().then(([userData, cards]) => {
+  userInfo.setUserInfo(userData);
+  cards.forEach((cardData) => {
+    renderCard(cardData, cardsList);
+  });
+});
 
 const profileEditButton = document.querySelector(".profile__edit-button");
 const editPopup = document.querySelector("#edit-popup");
@@ -89,13 +79,20 @@ function handleOpenEditModal() {
   const currentUserInfo = userInfo.getUserInfo();
 
   popupInputName.value = currentUserInfo.name;
-  popupInputDescription.value = currentUserInfo.description;
+  popupInputDescription.value = currentUserInfo.about;
   popupEditProfile.open();
 }
 
 function handleProfileFormSubmit(data) {
-  userInfo.setUserInfo(data);
-  popupEditProfile.close();
+  api
+    .editProfileData({
+      name: data.name,
+      about: data.description,
+    })
+    .then((userData) => {
+      userInfo.setUserInfo(userData);
+      popupEditProfile.close();
+    });
 }
 
 profileEditButton.addEventListener("click", function () {
@@ -108,23 +105,41 @@ function handleCardClick(data) {
 }
 
 function renderCard(data, container) {
-  const card = new Card(data, "#card__template", handleCardClick);
+  const card = new Card(
+    data,
+    "#card__template",
+    handleCardClick,
+    handleDeleteClick,
+  );
   const cardElement = card.getCardElement();
   container.prepend(cardElement);
 }
 
-initialCards.forEach((cardData) => {
-  renderCard(cardData, cardsList);
+const popupDeleteCard = new PopupWithConfirmation("#delete-card-popup");
+popupDeleteCard.setSubmitActon(() => {
+  api
+    .cardDelete(selectedCard.getId())
+    .then(() => {
+      selectedCard.deleteCard();
+      popupDeleteCard.close();
+    })
+    .catch((err) => console.log(err));
 });
+popupDeleteCard.setEventListeners();
+
+let selectedCard;
+
+function handleDeleteClick(card) {
+  selectedCard = card;
+  popupDeleteCard.open();
+}
 
 function handleCardFormSubmit(data) {
-  const cardData = {
-    name: data["place-name"],
-    link: data.link,
-  };
-  renderCard(cardData, cardsList);
-  popNewCard.close();
-  cardFormValidator.resetValidation();
+  api.addNewCard(data).then((cardData) => {
+    renderCard(cardData, cardsList);
+    popNewCard.close();
+    cardFormValidator.resetValidation();
+  });
 }
 
 profileAddButton.addEventListener("click", function () {
