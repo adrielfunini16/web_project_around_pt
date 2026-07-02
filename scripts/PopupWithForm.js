@@ -4,6 +4,8 @@ export default class PopupWithForm extends Popup {
   #handleFormSubmit;
   #inputList;
   #popupForm;
+  #popupSubmitButton;
+  #SubmitButtonText;
 
   constructor(handleFormSubmit, popupSelector) {
     super(popupSelector);
@@ -13,6 +15,9 @@ export default class PopupWithForm extends Popup {
     this.#inputList = Array.from(
       this.#popupForm.querySelectorAll(".popup__input"),
     );
+
+    this.#popupSubmitButton = this.popup.querySelector(".popup__button");
+    this.#SubmitButtonText = this.#popupSubmitButton.textContent;
   }
 
   setEventListeners() {
@@ -34,5 +39,13 @@ export default class PopupWithForm extends Popup {
       inputData[input.name] = input.value;
     });
     return inputData;
+  }
+
+  renderLoading(isLoading) {
+    if (isLoading) {
+      this.#popupSubmitButton.textContent = "Salvando...";
+    } else {
+      this.#popupSubmitButton.textContent = this.#SubmitButtonText;
+    }
   }
 }

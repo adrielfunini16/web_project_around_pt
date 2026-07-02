@@ -66,13 +66,17 @@ avatarEditButton.addEventListener("click", function () {
 });
 
 function handleAvatarFormSubmit(data) {
+  popupEditAvatar.renderLoading(true);
   api
     .updateAvatar(data)
     .then((userData) => {
       userInfo.setUserAvatar(userData);
       popupEditAvatar.close();
     })
-    .catch((err) => console.log(err));
+    .catch((err) => console.log(err))
+    .finally(() => {
+      popupEditAvatar.renderLoading(false);
+    });
 }
 
 const popupEditAvatar = new PopupWithForm(
@@ -112,6 +116,7 @@ function handleOpenEditModal() {
 }
 
 function handleProfileFormSubmit(data) {
+  popupEditProfile.renderLoading(true);
   api
     .editProfileData({
       name: data.name,
@@ -120,6 +125,10 @@ function handleProfileFormSubmit(data) {
     .then((userData) => {
       userInfo.setUserInfo(userData);
       popupEditProfile.close();
+    })
+    .catch((err) => console.log(false))
+    .finally(() => {
+      popupEditProfile.renderLoading(false);
     });
 }
 
@@ -178,11 +187,18 @@ function handleDeleteClick(card) {
 }
 
 function handleCardFormSubmit(data) {
-  api.addNewCard(data).then((cardData) => {
-    renderCard(cardData, cardsList);
-    popupNewCard.close();
-    cardFormValidator.resetValidation();
-  });
+  popupNewCard.renderLoading(true);
+  api
+    .addNewCard(data)
+    .then((cardData) => {
+      renderCard(cardData, cardsList);
+      popupNewCard.close();
+      cardFormValidator.resetValidation();
+    })
+    .catch((err) => console.log(err))
+    .finally(() => {
+      popupNewCard.renderLoading(false);
+    });
 }
 
 profileAddButton.addEventListener("click", function () {
