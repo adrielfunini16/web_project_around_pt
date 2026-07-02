@@ -75,6 +75,10 @@
   margin-top: 38px;
 }
 
+.popup__content_type_avatar {
+  min-height: 272px;
+}
+
 .popup__form {
   margin-top: 27px;
 }
