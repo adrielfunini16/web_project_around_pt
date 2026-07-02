@@ -1,12 +1,12 @@
-import Card from "./Card.js";
-import Section from "./Section.js";
-import Popup from "./Popup.js";
-import FormValidator from "./FormValidator.js";
-import PopupWithForm from "./PopupWithForm.js";
-import PopupWithImage from "./PopupWithImage.js";
-import PopupWithConfirmation from "./PopupWithConfirmation.js";
-import UserInfo from "./UserInfo.js";
-import Api from "./Api.js";
+import Card from "../src/components/Card.js";
+import Section from "../src/components/Section.js";
+import Popup from "../src/components/Popup.js";
+import FormValidator from "../src/components/FormValidator.js";
+import PopupWithForm from "../src/components/PopupWithForm.js";
+import PopupWithImage from "../src/components/PopupWithImage.js";
+import PopupWithConfirmation from "../src/components/PopupWithConfirmation.js";
+import UserInfo from "../src/components/UserInfo.js";
+import Api from "../src/components/Api.js";
 
 const api = new Api({
   baseUrl: "https://around-api.pt-br.tripleten-services.com/v1",
