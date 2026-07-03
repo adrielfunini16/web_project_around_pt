@@ -4,7 +4,7 @@ Around The U.S. is an interactive web application developed during the TripleTen
 
 ## 🔗 Live Demo
 
-👉 [Live Demo](https://adrielfunini16.github.io/web_project_around_pt/)
+👉 [Live Demo](https://adrielfunini16.github.io/web_project_around_pt/src/)
 
 ---
 
