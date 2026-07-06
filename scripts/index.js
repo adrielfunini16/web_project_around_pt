@@ -126,7 +126,7 @@ function handleProfileFormSubmit(data) {
       userInfo.setUserInfo(userData);
       popupEditProfile.close();
     })
-    .catch((err) => console.log(false))
+    .catch((err) => console.log(err))
     .finally(() => {
       popupEditProfile.renderLoading(false);
     });
