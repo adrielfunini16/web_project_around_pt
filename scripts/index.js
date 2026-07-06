@@ -8,6 +8,18 @@ import PopupWithConfirmation from "../src/components/PopupWithConfirmation.js";
 import UserInfo from "../src/components/UserInfo.js";
 import Api from "../src/components/Api.js";
 
+function renderCard(cardData) {
+  const card = new Card(
+    cardData,
+    "#card__template",
+    handleCardClick,
+    handleDeleteClick,
+    handleLikeClick,
+  );
+
+  return card.getCardElement();
+}
+
 const api = new Api({
   baseUrl: "https://around-api.pt-br.tripleten-services.com/v1",
   headers: {
@@ -16,11 +28,20 @@ const api = new Api({
   },
 });
 
+let cardSection;
+
 api.getAppInfo().then(([userData, cards]) => {
   userInfo.setUserInfo(userData);
-  cards.forEach((cardData) => {
-    renderCard(cardData, cardsList);
-  });
+
+  cardSection = new Section(
+    {
+      items: cards,
+      renderer: renderCard,
+    },
+    ".cards__list",
+  );
+
+  cardSection.renderer();
 });
 
 const profileEditButton = document.querySelector(".profile__edit-button");
@@ -153,19 +174,6 @@ function handleLikeClick(card) {
     .catch((err) => console.log(err));
 }
 
-function renderCard(data, container) {
-  const card = new Card(
-    data,
-    "#card__template",
-    handleCardClick,
-    handleDeleteClick,
-    handleLikeClick,
-  );
-
-  const cardElement = card.getCardElement();
-  container.prepend(cardElement);
-}
-
 const popupDeleteCard = new PopupWithConfirmation("#delete-card-popup");
 popupDeleteCard.setSubmitActon(() => {
   api
@@ -188,10 +196,13 @@ function handleDeleteClick(card) {
 
 function handleCardFormSubmit(data) {
   popupNewCard.renderLoading(true);
+
   api
     .addNewCard(data)
     .then((cardData) => {
-      renderCard(cardData, cardsList);
+      const cardElement = renderCard(cardData);
+      cardSection.addItem(cardElement);
+
       popupNewCard.close();
       cardFormValidator.resetValidation();
     })
